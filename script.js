@@ -17,11 +17,14 @@ function gameSetup() {
 
 function minimax(gameBoard,depth,turn) {
     // Base case
-    if (gameOver()) {
-
+    if (gameFinish()) {
+        // All space are failed
+        return 0;
     }
-    else if (gameFinish()) {
-
+    else if (gameOver(checkCurrentPlayer())) {
+        //someone wins
+        if (checkCurrentPlayer() === User) return -1*countEmptySpace()+depth;
+        else return +1*countEmptySpace-depth;
     }
 
     // Transerving
@@ -29,7 +32,7 @@ function minimax(gameBoard,depth,turn) {
     // return case
 }
 
-function gameOver() {
+function gameFinish() {
     let result = true;
     for (const row in gameBoard) {
         for (const column in row) {
@@ -39,7 +42,7 @@ function gameOver() {
     return result;
 }
 
-function gameFinish(player) {
+function gameOver(player) {
     const token = player.token;
 
     //Row check
@@ -63,6 +66,19 @@ function gameFinish(player) {
 
     return false;
 }
+
+function countEmptySpace() {
+    let count = 1;
+    for (const row in gameBoard) {
+        for (const column in row) if (gameBoard[row][column] === "") coutn++;;
+    }
+    return count;
+}
+
+function checkCurrentPlayer(turn) {
+    return turn? User : Bot;
+}
+
 class Player {
     static createPlayers() {
         return {
