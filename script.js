@@ -28,3 +28,11 @@ class Player {
 }
 
 const {User,Bot} = Player.createPlayers();
+
+const row = document.querySelector("#row");
+const column = document.querySelector("#column");
+const btn = document.getElementById("btn-go");
+
+btn.addEventListener('click',(e)=>{
+    console.log("Go");
+})
