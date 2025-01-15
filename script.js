@@ -35,7 +35,7 @@ function minimax(gameBoard,depth,turn) {
     }
 
     // Transerving
-    let bestScore = 0;
+    let bestScore = turn ? Infinity : -Infinity;
     for (let row=0; row<3;row++) {
         for (let column=0; column<3; column++) {
             if (gameBoard[row][column] === "") {
@@ -90,7 +90,7 @@ function gameOver(player,gameBoard) {
 
     // Diagonal check
     function checkDiagonl() {
-        return (gameBoard[0][0] === token && gameBoard[1][1] === token && gameBoard[2][2] === token) || (gameBoard[0][2] === token && gameBoard[1][1] === token && gameBoard[2,0] === token);
+        return (gameBoard[0][0] === token && gameBoard[1][1] === token && gameBoard[2][2] === token) || (gameBoard[0][2] === token && gameBoard[1][1] === token && gameBoard[2][0] === token);
     }
     if (checkDiagonl()) return true;
 
@@ -139,7 +139,7 @@ const btn = document.getElementById("btn-go");
 
 btn.addEventListener('click',(e)=>{
     User.move(gameBoard,+row.value, +column.value);
-    minimax(structuredClone(gameBoard),100,!turn);
+    minimax(structuredClone(gameBoard),9,!turn);
     Bot.move(gameBoard,bestMove[0],bestMove[1]);
     console.table(gameBoard);
 })
