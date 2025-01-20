@@ -8,12 +8,20 @@
     <script async src="script.js"></script>
 </head>
 <body>
-    <label for="row">Row:</label>
-    <input type="number" name="row" id="row">
-
-    <label for="column">Column:</label>
-    <input type="number" name="column" id="column">
-
-    <button id="btn-go">Go</button>
+    <main class="game-board">
+        <div data-row="0" data-column="0" class="game-board__cell"></div>
+        <div data-row="0" data-column="1" class="game-board__cell"></div>
+        <div data-row="0" data-column="2" class="game-board__cell"></div>
+        <div data-row="1" data-column="0" class="game-board__cell"></div>
+        <div data-row="1" data-column="1" class="game-board__cell"></div>
+        <div data-row="1" data-column="2" class="game-board__cell"></div>
+        <div data-row="2" data-column="0" class="game-board__cell"></div>
+        <div data-row="2" data-column="1" class="game-board__cell"></div>
+        <div data-row="2" data-column="2" class="game-board__cell"></div>
+    </main>
+    <section class="indication-texts">
+        <h2 class="turn">Turn: User</h2>
+        <h1 class="win-or-lose">You Win!</h1>
+    </section>
 </body>
 </html>
