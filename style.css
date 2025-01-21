@@ -1,0 +1,76 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* color */
+    --main-color: #FBF5DD;
+    --accent-color: #A6CDC6;
+    --grey-color: #16404D;
+    --highlight-color: #DDA853;
+
+    /* font */
+    --main-font: "Roboto", serif;
+}
+
+html {
+    /* Identify intial font size */
+    font-size: 16px;
+}
+
+body {
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    min-height: 100vh;
+
+    /* Typography */
+    font-family: var(--main-font);
+    color: var(--grey-color);
+
+    /* style */
+    background-color: var(--main-color);
+}
+
+main.game-board {
+    /* Layout */
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repear(3,1fr);
+    gap: 10px;
+
+    /* Typography */
+
+    /* style */
+}
+
+div.game-board__cell {
+    /* Layout */
+    width: 150px;
+    height: 150px;
+
+    /* Typography */
+
+    /* style */
+    background-color: var(--accent-color);
+    cursor: pointer;
+}
+div.game-board__cell:hover {
+    background-color: var(--highlight-color);
+}
+
+section.indication-texts {
+    /* Layout */
+
+    /* Typography */
+    font-size: 2rem;
+    letter-spacing: 8px;
+
+    /* style */
+}
