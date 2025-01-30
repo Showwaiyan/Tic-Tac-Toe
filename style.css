@@ -52,10 +52,15 @@ main.game-board {
 
 div.game-board__cell {
     /* Layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 150px;
     height: 150px;
 
     /* Typography */
+    font-size: 7rem;
+    font-weight: 700;
 
     /* style */
     background-color: var(--accent-color);
