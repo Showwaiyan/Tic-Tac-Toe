@@ -1,3 +1,5 @@
+const gameBoardEl = document.querySelector('.game-board');
+
 const gameBoard = [
     ["","",""],
     ["","",""],
@@ -9,7 +11,6 @@ const gameBoard = [
 // false for Bot
 let turn = true;
 
-
 let bestMove = [];
 
 function gameSetup() {
@@ -18,15 +19,22 @@ function gameSetup() {
     }
 }
 
+function renderGameBorad(gameBoard) {
+    const gameBoardFlat = gameBoard.flat();
+    Array.from(gameBoardEl.children).forEach((cell,i)=>{
+        cell.innerText = gameBoardFlat[i];
+    })
+}
+
 function minimax(gameBoard,depth,turn) {
     // Base case
     if (gameOver(checkCurrentPlayer(!turn),gameBoard)) {
         //someone wins
         if (checkCurrentPlayer(!turn) === User) {
-            return -1*countEmptySpace(gameBoard);
+            return -10+depth;
         }
         else {
-            return +1*countEmptySpace(gameBoard);
+            return 10-depth;
         }
     }
     else if (gameFinish(gameBoard) || depth === 0) {
@@ -133,13 +141,10 @@ class Player {
 
 const {User,Bot} = Player.createPlayers();
 
-const row = document.querySelector("#row");
-const column = document.querySelector("#column");
-const btn = document.getElementById("btn-go");
-
-btn.addEventListener('click',(e)=>{
-    User.move(gameBoard,+row.value, +column.value);
+gameBoardEl.addEventListener('click',(e)=>{
+    if (!e.target.classList.contains('game-board__cell')) return;
+    User.move(gameBoard,e.target.dataset.row,e.target.dataset.column);
     minimax(structuredClone(gameBoard),9,!turn);
     Bot.move(gameBoard,bestMove[0],bestMove[1]);
-    console.table(gameBoard);
+    renderGameBorad(gameBoard);
 })
