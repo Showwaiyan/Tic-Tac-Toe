@@ -26,49 +26,47 @@ function renderGameBorad(gameBoard) {
     })
 }
 
-function minimax(gameBoard,depth,turn) {
-    // Base case
-    if (gameOver(checkCurrentPlayer(!turn),gameBoard)) {
-        //someone wins
-        if (checkCurrentPlayer(!turn) === User) {
-            return -10+depth;
-        }
-        else {
-            return 10-depth;
-        }
+function minimax(gameBoard, depth, turn) {
+    // Base case: check if the game is over
+    if (gameOver(checkCurrentPlayer(!turn), gameBoard)) {
+        return checkCurrentPlayer(!turn) === User ? -10 + depth : 10 - depth;
     }
-    else if (gameFinish(gameBoard) || depth === 0) {
-        // All space are failed
+    if (gameFinish(gameBoard) || depth === 0) {
         return 0;
     }
 
-    // Transerving
     let bestScore = turn ? Infinity : -Infinity;
-    for (let row=0; row<3;row++) {
-        for (let column=0; column<3; column++) {
+    let localBestMove = null; // Store best move locally
+
+    for (let row = 0; row < 3; row++) {
+        for (let column = 0; column < 3; column++) {
             if (gameBoard[row][column] === "") {
-                if (checkCurrentPlayer(turn) === User) {
-                    User.move(gameBoard,row,column)
-                    let score = minimax(gameBoard,depth-1,!turn);
+                checkCurrentPlayer(turn).move(gameBoard, row, column);
+                let score = minimax(gameBoard, depth - 1, !turn);
+                gameBoard[row][column] = ""; // Undo move
+
+                if (turn) { // User (Minimizing Player)
                     if (score < bestScore) {
                         bestScore = score;
-                        bestMove = [row,column];
+                        localBestMove = [row, column];
                     }
-                    gameBoard[row][column] = "";
-                } else {
-                    Bot.move(gameBoard,row,column);
-                    let score = minimax(gameBoard,depth-1,!turn);
+                } else { // Bot (Maximizing Player)
                     if (score > bestScore) {
                         bestScore = score;
-                        bestMove = [row,column];
+                        localBestMove = [row, column];
                     }
-                    gameBoard[row][column] = "";
                 }
             }
         }
     }
+
+    if (!turn) {
+        bestMove = localBestMove; // Update bestMove only for Bot
+    }
+
     return bestScore;
 }
+
 
 function gameFinish(gameBoard) {
     let result = true;
