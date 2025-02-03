@@ -29,7 +29,7 @@ function renderGameBorad(gameBoard) {
 function minimax(gameBoard, depth, turn) {
     // Base case: check if the game is over
     if (gameOver(checkCurrentPlayer(!turn), gameBoard)) {
-        return checkCurrentPlayer(!turn) === User ? -10 + depth : 10 - depth;
+        return checkCurrentPlayer(!turn) === User ? -10 * countEmptySpace(gameBoard) : 10 * countEmptySpace(gameBoard);
     }
     if (gameFinish(gameBoard) || depth === 0) {
         return 0;
