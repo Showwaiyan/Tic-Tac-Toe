@@ -100,6 +100,23 @@ function styleWinningCells(row,column,diagonal) {
 function findWinningCells(gameBoard) {
 
 }
+//Row check
+function  checkRow(row) {
+    return (gameBoard[row][0] === token && gameBoard[row][1] === token && gameBoard[row][2] === token);
+}
+// Column check
+function checkColumn(column) {
+    return (gameBoard[0][column] === token && gameBoard[1][column] === token && gameBoard[2][column] === token);
+}
+// Diagonal check
+function checkDiagonl() {
+    if (gameBoard[0][0] === token && gameBoard[1][1] === token && gameBoard[2][2] === token) {
+        return true;
+    }
+    else if (gameBoard[0][2] === token && gameBoard[1][1] === token && gameBoard[2][0] === token) {
+        return true;
+    }
+}
 
 
 function gameFinish(gameBoard) {
@@ -115,31 +132,13 @@ function gameFinish(gameBoard) {
 function gameOver(player,gameBoard) {
     const token = player.token;
 
-    //Row check
-    function  checkRow(row) {
-        return (gameBoard[row][0] === token && gameBoard[row][1] === token && gameBoard[row][2] === token);
-    }
 
     for (let row=0; row<3; row++) if (checkRow(row)) {
         return true;
     }
 
-    // Column check
-    function checkColumn(column) {
-        return (gameBoard[0][column] === token && gameBoard[1][column] === token && gameBoard[2][column] === token);
-    }
     for (let column=0;column<3; column++) if (checkColumn(column)) {
         return true;
-    }
-
-    // Diagonal check
-    function checkDiagonl() {
-        if (gameBoard[0][0] === token && gameBoard[1][1] === token && gameBoard[2][2] === token) {
-            return true;
-        }
-        else if (gameBoard[0][2] === token && gameBoard[1][1] === token && gameBoard[2][0] === token) {
-            return true;
-        }
     }
 
     if (checkDiagonl()) return true;
