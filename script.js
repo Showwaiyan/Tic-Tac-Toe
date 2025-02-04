@@ -6,6 +6,9 @@ const gameBoard = [
     ["","",""],
 ];
 
+// For dedicate for user not to press while bot play
+let available = true;
+
 // For dedicate for Player and Bot turn
 // ture for Player
 // false for Bot
@@ -23,7 +26,7 @@ function renderGameBorad(gameBoard) {
     const gameBoardFlat = gameBoard.flat();
     Array.from(gameBoardEl.children).forEach((cell,i)=>{
         cell.innerText = gameBoardFlat[i];
-    })
+    });
 }
 
 function minimax(gameBoard, depth, turn) {
@@ -67,6 +70,36 @@ function minimax(gameBoard, depth, turn) {
     return bestScore;
 }
 
+// For styling wining player and position;
+function styleWinningCells(row,column,diagonal) {
+    let cellArray = Array.from(gameBoardEl.children); //getting 1D array
+    cellArray = [cellArray.slice(0,3),cellArray.slice(3,6),cellArray.slice(6,9)];
+
+    // diagonal win
+    if (diagonal === 0) {
+        for (let i=0;i<3;i++) cellArray[i][i].style.color = "var(--highlight-color)";
+        return;
+    }
+    else if (diagonal === 1) {
+        for (let i=0;i<3;i++) cellArray[2-i][i].style.color = "var(--highlight-color)";
+        return;
+    }
+
+    //row win
+    if (column === true) {
+        for(let i=0;i<3;i++) cellArray[row][i].style.color = "var(--highlight-color)";
+        return;
+    }
+    else if (row === true) {
+        for (let i=0;i<3;i++) cellArray[i][column].style.color = "var(--highlight-color)"
+        return;
+    }
+}
+
+function findWinningCells(gameBoard) {
+
+}
+
 
 function gameFinish(gameBoard) {
     let result = true;
@@ -86,18 +119,28 @@ function gameOver(player,gameBoard) {
         return (gameBoard[row][0] === token && gameBoard[row][1] === token && gameBoard[row][2] === token);
     }
 
-    for (let row=0; row<3; row++) if (checkRow(row)) return true;
+    for (let row=0; row<3; row++) if (checkRow(row)) {
+        return true;
+    }
 
     // Column check
     function checkColumn(column) {
         return (gameBoard[0][column] === token && gameBoard[1][column] === token && gameBoard[2][column] === token);
     }
-    for (let column=0;column<3; column++) if (checkColumn(column)) return true;
+    for (let column=0;column<3; column++) if (checkColumn(column)) {
+        return true;
+    }
 
     // Diagonal check
     function checkDiagonl() {
-        return (gameBoard[0][0] === token && gameBoard[1][1] === token && gameBoard[2][2] === token) || (gameBoard[0][2] === token && gameBoard[1][1] === token && gameBoard[2][0] === token);
+        if (gameBoard[0][0] === token && gameBoard[1][1] === token && gameBoard[2][2] === token) {
+            return true;
+        }
+        else if (gameBoard[0][2] === token && gameBoard[1][1] === token && gameBoard[2][0] === token) {
+            return true;
+        }
     }
+
     if (checkDiagonl()) return true;
 
     return false;
@@ -140,9 +183,24 @@ class Player {
 const {User,Bot} = Player.createPlayers();
 
 gameBoardEl.addEventListener('click',(e)=>{
+    if (gameFinish(gameBoard) || !available) return;
     if (!e.target.classList.contains('game-board__cell')) return;
+
+    available = false;
     User.move(gameBoard,e.target.dataset.row,e.target.dataset.column);
-    minimax(structuredClone(gameBoard),9,!turn);
-    Bot.move(gameBoard,bestMove[0],bestMove[1]);
+
+    if (gameOver(User,gameBoard)) {
+        available = false
+        return
+    }
     renderGameBorad(gameBoard);
+
+    setTimeout(() => {
+        minimax(structuredClone(gameBoard),9,!turn);
+        Bot.move(gameBoard,bestMove[0],bestMove[1]);
+        renderGameBorad(gameBoard);
+        if (gameOver(Bot,gameBoard)) return;
+        available = true;
+    }, 1000);
+
 })
