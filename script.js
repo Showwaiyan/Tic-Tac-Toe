@@ -72,8 +72,9 @@ function minimax(gameBoard, depth, turn) {
 
 // For styling wining player and position;
 function styleWinningCells(row,column,diagonal) {
-    let cellArray = Array.from(gameBoardEl.children); //getting 1D array
-    cellArray = [cellArray.slice(0,3),cellArray.slice(3,6),cellArray.slice(6,9)];
+    let cellArray1D = Array.from(gameBoardEl.children); // getting 1D array
+    const cellArray = Array.from({length:3},(_,i)=>cellArray1D.slice(i*3,i*3+3)); // making 2D array
+    console.log(cellArray);
 
     // diagonal win
     if (diagonal === 0) {
