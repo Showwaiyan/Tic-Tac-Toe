@@ -74,7 +74,6 @@ function minimax(gameBoard, depth, turn) {
 function styleWinningCells(row,column,diagonal) {
     let cellArray1D = Array.from(gameBoardEl.children); // getting 1D array
     const cellArray = Array.from({length:3},(_,i)=>cellArray1D.slice(i*3,i*3+3)); // making 2D array
-    console.log(cellArray);
 
     // diagonal win
     if (diagonal === 0) {
@@ -197,6 +196,20 @@ class Player {
 }
 
 const {User,Bot} = Player.createPlayers();
+
+const chooseRandomPlayer = function(gameBoard,turn) {
+    if (Math.random() < 0.5) {// generating random true or false
+        available = false;
+        setTimeout(() => {
+            minimax(structuredClone(gameBoard),9,!turn);
+            Bot.move(gameBoard,bestMove[0],bestMove[1]);
+            renderGameBorad(gameBoard);
+            available = true;
+        }, 1000);
+    }
+}
+
+chooseRandomPlayer(gameBoard,turn);
 
 gameBoardEl.addEventListener('click',(e)=>{
     if (gameFinish(gameBoard) || !available) return;
