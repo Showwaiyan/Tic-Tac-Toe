@@ -90,3 +90,14 @@ div.result {
     background-color: transparent;
     cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: 8px;
+    }
+
+    div.game-board__cell {
+        width: 80px;
+        height: 80px;
+    }
+}
