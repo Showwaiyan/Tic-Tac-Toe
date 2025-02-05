@@ -1,6 +1,8 @@
 const gameBoardEl = document.querySelector('.game-board');
 const turnEl = document.querySelector('.turn');
 const winTextEl = document.querySelector('.win-or-lose');
+const restartBtn = document.querySelector('.btn--restart');
+restartBtn.style.display = "none";
 
 const gameBoard = [
     ["","",""],
@@ -16,10 +18,15 @@ let available = true;
 // false for Bot
 let turn = true;
 function changeTurnText(turn) {
+    winTextEl.style.display = "none";
+    restartBtn.style.display = "none";
+    turnEl.style.display = "inline-block";
     turnEl.innerText = turn ? "Turn: User" : "Turn: Computer";
 }
 function changeWinText(turn) {
     turnEl.style.display = "none";
+    restartBtn.style.display = "inline-block";
+    winTextEl.style.display = "inline-block";
     winTextEl.innerText = turn ? "You Win!" : "You Lose!";
 }
 
@@ -251,5 +258,12 @@ gameBoardEl.addEventListener('click',(e)=>{
         available = true;
         changeTurnText(turn);
     }, 1000);
+
+})
+
+restartBtn.addEventListener('click',()=>{
+    gameSetup();
+    renderGameBorad(gameBoard);
+    chooseRandomPlayer(gameBoard);
 
 })

@@ -79,3 +79,14 @@ section.indication-texts {
 
     /* style */
 }
+
+div.result {
+    /* Layout */
+    display: flex;
+}
+.btn {
+    /* Style */
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
