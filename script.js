@@ -231,11 +231,15 @@ const chooseRandomPlayer = function(gameBoard) {
 chooseRandomPlayer(gameBoard);
 
 gameBoardEl.addEventListener('click',(e)=>{
+    const row = e.target.dataset.row;
+    const column = e.target.dataset.column;
+
+    if (gameBoard[row][column] !== "") return;
     if (gameFinish(gameBoard) || !available) return;
     if (!e.target.classList.contains('game-board__cell')) return;
 
     available = false;
-    User.move(gameBoard,e.target.dataset.row,e.target.dataset.column);
+    User.move(gameBoard,row,column);
     changeTurnText(!turn);
 
     if (gameOver(User,gameBoard)) {
