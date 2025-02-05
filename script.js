@@ -1,4 +1,6 @@
 const gameBoardEl = document.querySelector('.game-board');
+const turnEl = document.querySelector('.turn');
+const winTextEl = document.querySelector('.win-or-lose');
 
 const gameBoard = [
     ["","",""],
@@ -13,6 +15,13 @@ let available = true;
 // ture for Player
 // false for Bot
 let turn = true;
+function changeTurnText(turn) {
+    turnEl.innerText = turn ? "Turn: User" : "Turn: Computer";
+}
+function changeWinText(turn) {
+    turnEl.style.display = "none";
+    winTextEl.innerText = turn ? "You Win!" : "You Lose!";
+}
 
 let bestMove = [];
 
@@ -197,19 +206,22 @@ class Player {
 
 const {User,Bot} = Player.createPlayers();
 
-const chooseRandomPlayer = function(gameBoard,turn) {
+const chooseRandomPlayer = function(gameBoard) {
     if (Math.random() < 0.5) {// generating random true or false
         available = false;
+        changeTurnText(!turn);
         setTimeout(() => {
             minimax(structuredClone(gameBoard),9,!turn);
             Bot.move(gameBoard,bestMove[0],bestMove[1]);
             renderGameBorad(gameBoard);
             available = true;
-        }, 1000);
+            changeTurnText(turn);
+        }, 2000);
     }
+    else changeTurnText(turn);
 }
 
-chooseRandomPlayer(gameBoard,turn);
+chooseRandomPlayer(gameBoard);
 
 gameBoardEl.addEventListener('click',(e)=>{
     if (gameFinish(gameBoard) || !available) return;
@@ -217,9 +229,11 @@ gameBoardEl.addEventListener('click',(e)=>{
 
     available = false;
     User.move(gameBoard,e.target.dataset.row,e.target.dataset.column);
+    changeTurnText(!turn);
 
     if (gameOver(User,gameBoard)) {
         findWinningCells(User,gameBoard);
+        changeWinText(turn);
         available = false
         return
     }
@@ -231,9 +245,11 @@ gameBoardEl.addEventListener('click',(e)=>{
         renderGameBorad(gameBoard);
         if (gameOver(Bot,gameBoard)) {
             findWinningCells(Bot,gameBoard);
+            changeWinText(!turn);
             return;
         }
         available = true;
+        changeTurnText(turn);
     }, 1000);
 
 })
