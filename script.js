@@ -234,7 +234,7 @@ chooseRandomPlayer(gameBoard);
 const gameReset = function(turn,text,gameBoard) {
     findWinningCells(turn ? User : Bot, gameBoard)
     changeWinText(text);
-    if (turn) available = turn;
+    available = !turn;
 }
 
 gameBoardEl.addEventListener('click',(e)=>{
