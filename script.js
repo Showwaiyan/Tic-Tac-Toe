@@ -23,11 +23,11 @@ function changeTurnText(turn) {
     turnEl.style.display = "inline-block";
     turnEl.innerText = turn ? "Turn: User" : "Turn: Computer";
 }
-function changeWinText(turn) {
+function changeWinText(text) {
     turnEl.style.display = "none";
     restartBtn.style.display = "inline-block";
     winTextEl.style.display = "inline-block";
-    winTextEl.innerText = turn ? "You Win!" : "You Lose!";
+    winTextEl.innerText = text;
 }
 
 let bestMove = [];
@@ -36,6 +36,7 @@ function gameSetup() {
     for (let row=0; row<3; row++) {
         for (let column=0; column<3; column++) gameBoard[row][column] = "";
     }
+    Array.from(gameBoardEl.children).forEach(el=>el.style.color =  "var(--grey-color)")
 }
 
 function renderGameBorad(gameBoard) {
@@ -230,6 +231,12 @@ const chooseRandomPlayer = function(gameBoard) {
 
 chooseRandomPlayer(gameBoard);
 
+const gameReset = function(turn,text,gameBoard) {
+    findWinningCells(turn ? User : Bot, gameBoard)
+    changeWinText(text);
+    if (turn) available = turn;
+}
+
 gameBoardEl.addEventListener('click',(e)=>{
     const row = e.target.dataset.row;
     const column = e.target.dataset.column;
@@ -240,24 +247,29 @@ gameBoardEl.addEventListener('click',(e)=>{
 
     available = false;
     User.move(gameBoard,row,column);
+    renderGameBorad(gameBoard);
     changeTurnText(!turn);
 
     if (gameOver(User,gameBoard)) {
-        findWinningCells(User,gameBoard);
-        changeWinText(turn);
-        available = false
-        return
+        gameReset(turn,"You Win!",gameBoard);
+        return;
     }
-    renderGameBorad(gameBoard);
+    else if (gameFinish(gameBoard)) {
+        gameReset(turn,"Draw!",gameBoard);
+        return;
+    }
 
     setTimeout(() => {
         minimax(structuredClone(gameBoard),9,!turn);
         Bot.move(gameBoard,bestMove[0],bestMove[1]);
         renderGameBorad(gameBoard);
         if (gameOver(Bot,gameBoard)) {
-            findWinningCells(Bot,gameBoard);
-            changeWinText(!turn);
+            gameReset(!turn,"You Lose!",gameBoard);
             return;
+        }
+        else if (gameFinish(gameBoard)) {
+            gameReset(turn,"Draw!",gameBoard);
+            return
         }
         available = true;
         changeTurnText(turn);
@@ -269,5 +281,4 @@ restartBtn.addEventListener('click',()=>{
     gameSetup();
     renderGameBorad(gameBoard);
     chooseRandomPlayer(gameBoard);
-
 })
