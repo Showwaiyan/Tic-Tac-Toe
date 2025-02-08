@@ -268,7 +268,7 @@ gameBoardEl.addEventListener('click',(e)=>{
             return;
         }
         else if (gameFinish(gameBoard)) {
-            gameReset(turn,"Draw!",gameBoard);
+            gameReset(!turn,"Draw!",gameBoard);
             return
         }
         available = true;
